@@ -1,7 +1,7 @@
 /**
  * This is the RESTful API for the Cyclomize cross-platform app.
  * 
- * Guidelines using on this API:
+ * Guidelines used on this API:
  *    - Keep verbs out of the base URLs
  *    - HTTP verbs are POST, GET, PUT, and DELETE ([Create, Read, Update, Delete][crud])
  *    - Concrete names are better than abstract
@@ -39,7 +39,7 @@ var mongoose         = require('mongoose');
 // LOCAL PATHS
 //------------
 var APP_ROOT    = __dirname;
-var STATIC_PATH = './data/bin';
+var STATIC_PATH = './data/bin/';
 
 
 
@@ -53,21 +53,6 @@ var app = express();
 // DB configuration
 var url    = 'mongodb://' + process.env.IP + ':27017/cyclomizeapi';
 var schema = mongoose.Schema;
-
-// setup Multer - middleware storage manager for multi-part data (file upload)
-var storage = multer.diskStorage({
-    destination: function (req, file, callback) {
-        callback(null, STATIC_PATH);
-    },
-    filename: function (req, file, callback) {
-        console.log(req);
-        
-        var filename = STATIC_PATH + req.body.email + ".png";
-        callback(null, filename);
-    }
-});
-
-var upload = multer({ storage : storage}).single('userPhoto');
 
 // create a path to allow access to static files
 express.static(path.join(APP_ROOT, STATIC_PATH));
@@ -93,13 +78,11 @@ var UserSchema = new schema({
     email      : {type:String, required:true},
     name       : String,
     facebookId : String,
-    profilePic : Buffer,
     createdAt  : String,
-    updatedAt  : String
+    updatedAt  : String,
+    profilePic : Buffer
 });
 var User = mongoose.model('User', UserSchema);
-
-
 
 /**
  * Remove all objects - documents from a collection - model in the DB. 
@@ -121,6 +104,19 @@ function dropDatabase(){
 
 // DATA MANIPULATION METHODS - DML
 //--------------------------------
+
+/**
+ * Deletes a temporary file
+ */
+function deleteTempFile(filename){
+    fs.unlink(filename, function (err) {
+        if(!err) {
+            console.log("temporary file was deleted.");
+        }else{
+            console.log("there was an error while the system was deleting the temporary file.");
+        }
+    });
+}
 
 
 
@@ -229,47 +225,66 @@ app.post('/users_updt_pass', function (req, res) {
 });
 
 /**
- * Uploads profile picture 
+ * Uploads profile picture
+ * 
+ * This method gets the file with multer middleware and save it on a temporary 
+ * file, then we search on the database for a user with the given id (email),
+ * if there is an user with the given id the profile picture attribute of this
+ * user is updated, otherwise the temporary file is deleted and an error is thrown.
  */
 app.post('/users_updt_profimg', function(req, res){
-    console.log("Trying to upload a file ...");
+    console.log("Trying to upload a file for the user " + req.query.email + " ...");
+    
+    // get the user id to use it as the base for the temporary filename
+    var filename = req.query.email + "-profpic.png";
+    
+    // creates a storage function variable to save the file from locally    
+    var storage = multer.diskStorage({
+        destination: function (req, file, callback) {
+            callback(null, STATIC_PATH);
+        },
+        filename: function (req, file, callback) {
+            console.log("saving file: "+ filename);
+            callback(null,  filename);
+        }
+    });
+
+    var upload = multer({ storage : storage}).single('userPhoto');
     
     // call the upload function used by Multer to save the file temporarily locally
     upload(req, res, function(err) {
         if(err) {
-            return res.end("Error uploading file.");
+            res.send("Error uploading file.");
         }else{
-            var query = {'email':req.body.email};
-            console.log(query);
+            var query = {'email':req.query.email};
             
-            User.find(query, function (err, user) {
-                if(!err){
-                    
-                    var filename = STATIC_PATH + req.body.email + ".png";
+            // check if the user with the given id(email) exists
+            User.findOne(query, function (err, user) {
+                if(!err && user != null){
                     
                     // read file from temp directory
-                    fs.readFile(filename, function (dataErr, data) {
-                        if(data) {
-                            user.photo ='';
-                                
-                            // assigns the image to the path.
-                            user.photo = data;  
-                            user.save(function (saveErr, saveUser) {
-                                if (saveErr) {
-                                    throw saveErr;
-                                }
-                                res.end("saved image");
-                            });
+                    fs.readFile(STATIC_PATH + filename, function (dataErr, data) {
+                        if(!dataErr && data != null) {
+                            user.profilePic = data;  
+                            
+                            // updates the user profile picture
+                            user.save();
+                        }else{
+                            res.end("Error, the operation couldn't be completed");
                         }
+                        
+                        deleteTempFile(STATIC_PATH + filename);
                     });
+                }else{
+                    res.end("User with email " + req.query.email + " wasn't found.")
+                    deleteTempFile(STATIC_PATH + filename);
                 }
             });
             
-            res.send("File was uploaded");        
+            res.end('Your file was uploaded');
         }
     });
 });
-
 
 /**
  * Deletes an user

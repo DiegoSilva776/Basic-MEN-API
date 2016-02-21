@@ -1,6 +1,6 @@
 ## Environment setup
 
-Node setup on Ubuntu machine
+NodeJS setup on Ubuntu machine (C9)
 
 1 - Install Node
 
@@ -29,9 +29,6 @@ $ sudo npm install npm -g
 5 - Install the modules you need in your application, globally using '-g' or within the app '--save'
 
 npm install express --save
-
-
-6 - Clone the repository from Bitbucket
 
 
 # BasicMENREST
