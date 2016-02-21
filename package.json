@@ -1,0 +1,61 @@
+{
+  "name": "CyclomizeAPI",
+  "description": "RESTful API for the Cyclomize app",
+  "version": "0.0.1",
+  "author": {
+    "name": "Diego Silva",
+    "email": "diegosilva.builder@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Diego Silva",
+      "email": "diegosilva.builder@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "homepage": "",
+  "keywords": [
+    "RESTful API",
+    "Cyclomize",
+    "mountain bike",
+    "mountain",
+    "bike",
+    "trails",
+    "connected",
+    "app",
+    "api"
+  ],
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "fs": "0.0.2",
+    "method-override": "^2.3.5",
+    "mongodb": "^2.1.7",
+    "mongoose": "^4.4.4",
+    "multer": "^1.1.0",
+    "router": "^1.1.4"
+  },
+  "devDependencies": {
+    "dep1": "0.8.1"
+  },
+  "engines": {
+    "node": ">= 4.2.4"
+  },
+  "files": [
+    "Readme.md",
+    "package.json",
+    "main.js",
+    "node_modules/",
+    "log.txt"
+  ],
+  "scripts": {
+    "test": "echo 'Hello moutain biker' >> log.txt"
+  },
+  "gitHead": "",
+  "bugs": {
+    "url": ""
+  }
+}
