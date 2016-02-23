@@ -7,7 +7,7 @@
 
 // DEPENDENCIES
 //-------------
-var User = require('../models/user');
+var User = require('../models/userModel');
 var fs   = require('fs');
 
 
@@ -23,10 +23,19 @@ module.exports = {
     DBManager : {
         
         // ATTRIBUTES
+        DB_PORT : '27017',
         DB_NAME : 'basicRESTMEN_DB',
         
         
         // FUNCTIONS
+        /**
+         * Get the connection URL of the database
+         */
+        getConnectionURL : function(){
+            return 'mongodb://' + process.env.IP +':'+ this.DB_PORT +'/'+ this.DB_NAME;  
+        },
+        
+        
         /**
          * Delete all users from the database
          */
@@ -50,25 +59,22 @@ module.exports = {
     Local : {
         
         // ATTRIBUTES
-        APP_ROOT    : __dirname,
-        STATIC_PATH : './data/bin/',
-        
+        APP_ROOT    : __dirname + '/..',
+        STATIC_PATH : '/data/',
+        TEMP_DIR    : '_tmp/',
         
         // FUNCTIONS
         /**
          * Deletes a temporary file
          */
         deleteTempFile : function (filename){
-            fs.unlink(filename, function (err) {
+            fs.unlink(this.APP_ROOT + this.STATIC_PATH + this.TEMP_DIR + filename, function (err) {
                 if(!err) {
-                    console.log("temporary file was deleted.");
+                    console.log("Temporary file was deleted.");
                 }else{
-                    console.log("there was an error while the system was deleting the temporary file.");
+                    console.log("There was an error while the system was deleting the temporary file:\n"+err);
                 }
             });
         }
     }
 };
-
-
-    

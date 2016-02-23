@@ -30,6 +30,7 @@
     "api"
   ],
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.0",
     "fs": "0.0.2",
     "method-override": "^2.3.5",
@@ -37,6 +38,7 @@
     "mongoose": "^4.4.4",
     "multer": "^1.1.0",
     "nodemon": "^1.9.0",
+    "passport": "^0.3.2",
     "router": "^1.1.4"
   },
   "devDependencies": {
