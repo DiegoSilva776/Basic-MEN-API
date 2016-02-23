@@ -32,3 +32,8 @@ npm install express --save
 
 
 # BasicMENREST
+
+
+# References
+https://codeforgeek.com/2014/11/file-uploads-using-node-js/
+

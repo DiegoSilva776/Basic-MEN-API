@@ -1,9 +1,9 @@
 /**
- * This is the RESTful API for the Cyclomize cross-platform app.
+ * This is the RESTful API for a basic cross-platform app.
  * 
  * Guidelines used on this API:
  *    - Keep verbs out of the base URLs
- *    - HTTP verbs are POST, GET, PUT, and DELETE ([Create, Read, Update, Delete][crud])
+ *    - HTTP verbs are POST, GET, PUT, and DELETE ([Create, Read, Update, Delete][CRUD])
  *    - Concrete names are better than abstract
  * 
  *    Ex:
@@ -18,28 +18,26 @@
  * 
  * Author: Diego M. Silva
  * Created at: 02/19/2016
- * Last updated: 02/20/2016 
+ * Last updated: 02/23/2016 
  */
+
 
 
 // DEPENDENCIES
 //-------------
-var express          = require('express');
-var path             = require("path");
-var bodyParser       = require('body-parser');
-var multer           = require('multer');
-var methodOverride   = require('method-override')
-var router           = require('router');
-var errorhandler     = require('errorhandler')
-var fs               = require('fs');
-var mongoose         = require('mongoose');
+// external depencies
+var express        = require('express');
+var path           = require("path");
+var bodyParser     = require('body-parser');
+var multer         = require('multer');
+var methodOverride = require('method-override');
+var errorhandler   = require('errorhandler')
+var fs             = require('fs');
+var mongoose       = require('mongoose');
+var utils          = require('./utils/utils.js');
 
-
-
-// LOCAL PATHS
-//------------
-var APP_ROOT    = __dirname;
-var STATIC_PATH = './data/bin/';
+// load your business models "classes" bonded to MongoDB via Mongoose 
+var User = require('./models/user');
 
 
 
@@ -47,118 +45,52 @@ var STATIC_PATH = './data/bin/';
 //---------------
 console.log('Initializing system ...');
 
-// Create an instance of the webserver object
+// create an instance of the webserver object
 var app = express();
 
-// DB configuration
-var url    = 'mongodb://' + process.env.IP + ':27017/cyclomizeapi';
-var schema = mongoose.Schema;
-
-// create a path to allow access to static files
-express.static(path.join(APP_ROOT, STATIC_PATH));
-  
-// connect the mongoose framework to the created database
-mongoose.connect(url);
-
 // setup the HTTP document body parser, to get data formated as urlencoded and json
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// initializes a router object with the current express router
+var router = express.Router();
+
+// creates a path to allow access to static files
+express.static(path.join(utils.Local.APP_ROOT, utils.Local.STATIC_PATH));
+
+// configures MongoDB and attach Mongoose to it
+var url = 'mongodb://' + process.env.IP + ':27017/' + utils.DBManager.DB_NAME;
+mongoose.connect(url);
 
 
-// SCHEMAS AND MODELS - DDL
-//-------------------------
 
+// ROUTING
+//--------
+var usersRoute           = router.route('/users');
+var userRoute            = router.route('/users/:id');
+var userUptPassRoute     = router.route('/users_updt_pass');
+var userUpdtProfPicRoute = router.route('/users_updt_profpic');
+
+// register the declared routes
+app.use('/api', router); 
+
+
+
+// ROUTES && BUSINESS FUNCTIONS
+//-----------------------------
 /**
- * User
- * Create a model based on the User schema, a model is the actual class based 
- * upon a database schema. A model = a type of document.
+ * Just a hello message to the API users
  */
-var UserSchema = new schema({
-    email      : {type:String, required:true},
-    name       : String,
-    facebookId : String,
-    createdAt  : String,
-    updatedAt  : String,
-    profilePic : Buffer
-});
-var User = mongoose.model('User', UserSchema);
-
-/**
- * Remove all objects - documents from a collection - model in the DB. 
- */
-function dropDatabase(){
-    console.log('Removing all User objects from the database ...');
-    
-    User.remove({}, function(err) {
-        if(!err){
-            console.log('collection removed')      
-        }else{
-            console.log('There was an error removing the User collection');
-        }
-    });
-}
-
-
-
-
-// DATA MANIPULATION METHODS - DML
-//--------------------------------
-
-/**
- * Deletes a temporary file
- */
-function deleteTempFile(filename){
-    fs.unlink(filename, function (err) {
-        if(!err) {
-            console.log("temporary file was deleted.");
-        }else{
-            console.log("there was an error while the system was deleting the temporary file.");
-        }
-    });
-}
-
-
-
-
-// BUSINESS METHODS - PATHS
-//-------------------------
-
-/**
- * Get a list of all the users from the database
- */
-app.get('/users', function (req, res) {
-    return User.find(function (err, users) {
-        if (!err) {
-            return res.send(users);
-        } else {
-            return res.send(err);
-        }
-    });
-});
-
-/**
- * Get the user that the specified id from the database or return null
- */
-app.get('/users/:id', function (req, res) {
-    console.log('\nTrying to get user with id '+ req.params.id);
-    
-    return User.find({'email':req.params.id}).exec(function (err, user) {
-        if (!err) {
-            return res.send(user);
-        } else {
-            return res.send(err);
-        }
-    });
+router.get('/', function(req,res){
+    res.json({message: 'Welcome to the BasicRESMEN API (; to get access to the API paths use "serverAddress/api/path"'});
 });
 
 /**
  * Adds an user or a list of users
  */
-app.post('/users', function (req, res) {
+usersRoute.post(function (req, res) {
     console.log('\nPOST request to create a new user: ');
-    console.log(req.query);
-    
+
     // create a new user without a profile picture
     var user = new User({
         email      : req.query.email,
@@ -181,9 +113,24 @@ app.post('/users', function (req, res) {
 });
 
 /**
+ * Get a list of all the users from the database
+ */
+usersRoute.get(function (req, res) {
+    console.log('GET request for all users ...');
+    
+    return User.find(function (err, users) {
+        if (!err) {
+            return res.send(users);
+        } else {
+            return res.send(err);
+        }
+    });
+});
+
+/**
  * Updates the information of the user whom has the specified id.
  */
-app.put('/users/:id', function (req, res) {
+userRoute.put(function (req, res) {
     console.log('PUT request to update the user with the id ' + req.params.id);
     
     var query = {'email' : req.params.id};
@@ -206,7 +153,7 @@ app.put('/users/:id', function (req, res) {
 /**
  * Updates user password
  */
-app.post('/users_updt_pass', function (req, res) {
+userUptPassRoute.post(function (req, res) {
     console.log('POST request to update the password of the user with the id ' + req.query.email);
     
     var query = {'email' : req.query.email};
@@ -232,8 +179,8 @@ app.post('/users_updt_pass', function (req, res) {
  * if there is an user with the given id the profile picture attribute of this
  * user is updated, otherwise the temporary file is deleted and an error is thrown.
  */
-app.post('/users_updt_profimg', function(req, res){
-    console.log("Trying to upload a file for the user " + req.query.email + " ...");
+ userUpdtProfPicRoute.post(function(req, res){
+    console.log("POST request, trying to upload a file for the user " + req.query.email + " ...");
     
     // get the user id to use it as the base for the temporary filename
     var filename = req.query.email + "-profpic.png";
@@ -241,7 +188,7 @@ app.post('/users_updt_profimg', function(req, res){
     // creates a storage function variable to save the file from locally    
     var storage = multer.diskStorage({
         destination: function (req, file, callback) {
-            callback(null, STATIC_PATH);
+            callback(null, utils.Local.STATIC_PATH);
         },
         filename: function (req, file, callback) {
             console.log("saving file: "+ filename);
@@ -263,7 +210,7 @@ app.post('/users_updt_profimg', function(req, res){
                 if(!err && user != null){
                     
                     // read file from temp directory
-                    fs.readFile(STATIC_PATH + filename, function (dataErr, data) {
+                    fs.readFile(utils.Local.STATIC_PATH + filename, function (dataErr, data) {
                         if(!dataErr && data != null) {
                             user.profilePic = data;  
                             
@@ -273,11 +220,11 @@ app.post('/users_updt_profimg', function(req, res){
                             res.end("Error, the operation couldn't be completed");
                         }
                         
-                        deleteTempFile(STATIC_PATH + filename);
+                        utils.Local.deleteTempFile(utils.Local.STATIC_PATH + filename);
                     });
                 }else{
                     res.end("User with email " + req.query.email + " wasn't found.")
-                    deleteTempFile(STATIC_PATH + filename);
+                    utils.Local.deleteTempFile(utils.Local.STATIC_PATH + filename);
                 }
             });
             
@@ -287,9 +234,24 @@ app.post('/users_updt_profimg', function(req, res){
 });
 
 /**
+ * Get the user that the specified id from the database or return null
+ */
+userRoute.get(function (req, res) {
+    console.log('\nTrying to get user with id '+ req.params.id);
+    
+    return User.find({'email':req.params.id}).exec(function (err, user) {
+        if (!err) {
+            return res.send(user);
+        } else {
+            return res.send(err);
+        }
+    });
+});
+
+/**
  * Deletes an user
  */
-app.delete('/users/:id', function (req, res) {
+userRoute.delete(function (req, res) {
     console.log('\nDELETE request to the user with email ' + req.params.id);
     
     var query = {'email' : req.params.id};
@@ -321,13 +283,13 @@ app.delete('/users/:id', function (req, res) {
 var server = app.listen(process.env.PORT, process.env.IP, function () {
 
     // boot up the server
-    var host = server.address().address
-    var port = server.address().port
+    var host = server.address().address;
+    var port = server.address().port;
 
-    console.log("OurMemex API listening at http://%s:%s", host, port)
+    console.log("OurMemex API listening at http://%s:%s", host, port);
     
     
     // ATTENTION RUNNING DDL METHODS!
     //-------------------------------
-    // dropDatabase();
+    // utils.DBManager.dropUsers();
 });
