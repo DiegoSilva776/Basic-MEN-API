@@ -34,12 +34,18 @@ var methodOverride = require('method-override');
 var errorhandler   = require('errorhandler')
 var fs             = require('fs');
 var mongoose       = require('mongoose');
-var utils          = require('./utils/utils.js');
+var ejs            = require('ejs');
+var session        = require('express-session');
+
+// local dependencies
+var utils = require('./utils/utils.js');
 
 // load the business controller "classes" that manages the model classes 
 // that are bonded to MongoDB via Mongoose. 
-var userController = require('./controllers/userController');
-var authController = require('./controllers/authController');
+var userController      = require('./controllers/userController');
+var authController      = require('./controllers/authController');
+var apiClientController = require('./controllers/apiClientController');
+var oauth2Controller    = require('./controllers/oauth2Controller');
 
 
 
@@ -64,11 +70,39 @@ express.static(path.join(utils.Local.APP_ROOT, utils.Local.STATIC_PATH));
 var url = utils.DBManager.getConnectionURL();
 mongoose.connect(url);
 
+// set view engine to ejs
+app.set('view engine', 'ejs');
+
+// use express session support since OAuth2orize requires it
+app.use(session({
+  secret: 'Super Secret Session Key',
+  saveUninitialized: true,
+  resave: true
+}));
 
 
 // ROUTES && BUSINESS FUNCTIONS
 //-----------------------------
+/**
+ * Access control related routes
+ */
+// create endpoint handlers for /api clients
+router.route('/apiClients')
+  .post(apiClientController.postClients)
+  .get(apiClientController.getClients);
 
+// Create endpoint handlers for oauth2 authorize
+router.route('/oauth2/authorize')
+  .get(authController.isAuthenticated, oauth2Controller.authorization)
+  .post(authController.isAuthenticated, oauth2Controller.decision);
+
+// Create endpoint handlers for oauth2 token
+router.route('/oauth2/token')
+  .post(authController.isClientAuthenticated, oauth2Controller.token);
+
+/**
+ * User related routes
+ */
 // create endpoint handlers for /users
 router.route('/users')
   .post(userController.createUsers)
@@ -86,13 +120,12 @@ router.route('/users/:id/updt_prfl_pic')
 
 // create a separeted route to authenticate the user and return an access token
 router.route('/users/:id/login')
-  .put(authController.isAuthenticated, userController.updateProfPic);
+  .post(userController.loginUser);
 
-
-// put all paths under '/api'.
+/**
+ * put all paths under '/api'.
+ */
 app.use('/api', router);
-
-
 
 
 

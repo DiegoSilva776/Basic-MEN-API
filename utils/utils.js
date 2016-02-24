@@ -76,5 +76,28 @@ module.exports = {
                 }
             });
         }
+    },
+    
+    
+    /**
+     * Return an unique identifier given its length
+     */
+    getUniqueId : function(len){
+        var buf = [];
+        var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charlen = chars.length;
+        
+        for (var i = 0; i < len; ++i) {
+            buf.push(chars[this.getRandomInt(0, charlen - 1)]);
+        }
+        
+        return buf.join('');
+    },
+
+    /**
+     * Get a random integer between a range of numbers
+     */
+    getRandomInt : function(min, max){
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 };

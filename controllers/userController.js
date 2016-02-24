@@ -196,3 +196,13 @@ exports.deleteUser = function (req, res) {
         }
     });
 };
+
+
+/**
+ * Log the user in
+ */
+exports.loginUser = function(req, res){
+    console.log("Basic security check was valid, starting OAuth2 ...");
+    
+    res.end("Return accessToken to make next requests token:#asdçfkasjer23çrKSDJFÇSLD ...");
+}

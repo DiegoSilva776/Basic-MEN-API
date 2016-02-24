@@ -26,14 +26,18 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.0",
+    "ejs": "^2.4.1",
+    "express-session": "^1.13.0",
     "fs": "0.0.2",
     "method-override": "^2.3.5",
     "mongodb": "^2.1.7",
     "mongoose": "^4.4.4",
     "multer": "^1.1.0",
     "nodemon": "^1.9.0",
+    "oauth2orize": "^1.2.2",
     "passport": "^0.3.2",
     "passport-http": "^0.3.0",
+    "passport-http-bearer": "^1.0.1",
     "router": "^1.1.4"
   },
   "devDependencies": {
