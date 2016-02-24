@@ -1,6 +1,6 @@
 {
-  "name": "CyclomizeAPI",
-  "description": "RESTful API for the Cyclomize app",
+  "name": "BasicRESTMEN",
+  "description": "A basic RESTful API that using MongoDB - Mongoose, Express, and NodeJS",
   "version": "0.0.1",
   "author": {
     "name": "Diego Silva",
@@ -15,17 +15,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/DiegoSilva776/BasicMENREST"
   },
   "homepage": "",
   "keywords": [
     "RESTful API",
-    "Cyclomize",
-    "mountain bike",
-    "mountain",
-    "bike",
-    "trails",
-    "connected",
     "app",
     "api"
   ],
@@ -39,6 +33,7 @@
     "multer": "^1.1.0",
     "nodemon": "^1.9.0",
     "passport": "^0.3.2",
+    "passport-http": "^0.3.0",
     "router": "^1.1.4"
   },
   "devDependencies": {
@@ -55,7 +50,7 @@
     "log.txt"
   ],
   "scripts": {
-    "test": "echo 'Hello moutain biker' >> log.txt"
+    "test": "echo 'Hello there!"
   },
   "gitHead": "",
   "bugs": {

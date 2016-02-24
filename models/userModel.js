@@ -22,7 +22,7 @@ var bcrypt = require('bcrypt-nodejs');
  * upon a database schema. A model is equal to a type of document.
  */
 var UserSchema = new mongoose.Schema({
-    email : {
+    username : {
         type     : String,
         unique   : true,
         required : true
@@ -39,9 +39,13 @@ var UserSchema = new mongoose.Schema({
 });
 
 
-// TRIGGERS AND PROCEDURES
-//------------------------
-// update the hash value of the user password in case it changes
+// METHODS
+//--------
+/**
+ * Trigger update password.
+ * 
+ * This method updates the hash value of the user password in case it has changed
+ */ 
 UserSchema.pre('save', function(callback) {
     var user = this;
 
@@ -68,6 +72,23 @@ UserSchema.pre('save', function(callback) {
         return callback();
     }
 });
+
+
+/**
+ * Validate the user password with the hash that is currently stored.
+ */
+UserSchema.methods.verifyPassword = function(password, cb) {
+    bcrypt.compare(password, this.password, function(err, isMatch) {
+        if(err){
+            return cb(err);    
+        }
+        
+        cb(null, isMatch);
+    });
+};
+
+
+
 
 
 // MODEL BINDING

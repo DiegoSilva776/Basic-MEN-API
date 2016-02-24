@@ -39,6 +39,7 @@ var utils          = require('./utils/utils.js');
 // load the business controller "classes" that manages the model classes 
 // that are bonded to MongoDB via Mongoose. 
 var userController = require('./controllers/userController');
+var authController = require('./controllers/authController');
 
 
 
@@ -67,41 +68,31 @@ mongoose.connect(url);
 
 // ROUTES && BUSINESS FUNCTIONS
 //-----------------------------
+
+// create endpoint handlers for /users
+router.route('/users')
+  .post(userController.createUsers)
+  .get(authController.isAuthenticated, userController.getUsers);
+
+// create endpoint handlers for /users/:id
+router.route('/users/:id')
+  .get(authController.isAuthenticated, userController.getUser)
+  .put(authController.isAuthenticated, userController.updateUser)
+  .delete(authController.isAuthenticated, userController.deleteUser);
+
+// create a separeted route to update the user profile picture
+router.route('/users/:id/updt_prfl_pic')
+  .put(authController.isAuthenticated, userController.updateProfPic);
+
+// create a separeted route to authenticate the user and return an access token
+router.route('/users/:id/login')
+  .put(authController.isAuthenticated, userController.updateProfPic);
+
+
 // put all paths under '/api'.
 app.use('/api', router);
 
-// Greetings for the API users
-router.get('/', function(req,res){
-    res.json({message: 'Welcome to the BasicRESMEN API (; to get access to the API paths use "serverAddress/api/path"'});
-});
 
-// User related routes
-router.post('/users', function (req, res) {
-    userController.createUsers(req, res);
-});
-
-/* 
- * It is not really necessary
-router.get('/users', function (req, res) {
-    userController.getUsers(req, res);
-});
-*/
-
-router.get('/users/:id', function (req, res) {
-    userController.getUser(req, res);
-});
-
-router.put('/users/:id', function (req, res) {
-    userController.updateUser(req, res);
-});
-
-router.put('/users/:id/updt_prfl_pic', function(req, res){
-    userController.updateProfPic(req, res); 
-});
-
-router.delete('/users/:id', function (req, res) {
-    userController.deleteUser(req, res);
-});
 
 
 
@@ -114,7 +105,6 @@ var server = app.listen(process.env.PORT, process.env.IP, function () {
     var port = server.address().port;
 
     console.log("OurMemex API listening at http://%s:%s", host, port);
-    
     
     // ATTENTION RUNNING DDL METHODS!
     //-------------------------------
