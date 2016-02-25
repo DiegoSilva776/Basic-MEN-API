@@ -13,7 +13,7 @@ var crypto = require('crypto');
 // models
 var User   = require('../models/userModel');
 var Client = require('../models/apiClientModel');
-var Token  = require('../models/apiAccTokModel');
+var Token  = require('../models/apiTokenModel');
 
 
 

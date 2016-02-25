@@ -17,7 +17,7 @@ var Utils = require('../utils/utils.js');
 // models
 var User   = require('../models/userModel');
 var Client = require('../models/apiClientModel');
-var Token  = require('../models/apiAccTokModel');
+var Token  = require('../models/apiTokenModel');
 
 
 
