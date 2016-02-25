@@ -1,4 +1,6 @@
 /**
+ * An application client is what would request access to a user account.
+ * 
  * The API Client controller is responsible for adding a client object that is
  * going to handle the authentication request proccess for the oauth2 security
  * protocol.
@@ -28,7 +30,7 @@ exports.postClients = function(req, res) {
             return res.send(err);
 
         res.json({ 
-            message: 'Client added to the locker!', data: client 
+            message: 'Client added to the client controller data!', data: client 
         });
     });
 };

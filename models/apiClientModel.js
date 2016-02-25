@@ -1,8 +1,9 @@
 /**
- * The API client is responsible for handling the request for an access code
- * which is exchanged by an access token.
+ * The API client is responsible for handling a request from a client of the 
+ * API, requesting an access code, and exchanging the access code for an access
+ * token, that token can then be used on every request that has the 'bearer' 
+ * authentication method implemented.
  */
-
 
 
 // Load required packages
@@ -12,8 +13,8 @@ var mongoose = require('mongoose');
 var ClientSchema = new mongoose.Schema({
     name: { 
         type: String, 
-        unique: true, 
-        required: true 
+        unique: false, 
+        required: true
     },
     id: { 
         type: String, 
@@ -23,7 +24,7 @@ var ClientSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
-    userId: { 
+    userId: { // the user who owns the application client
         type: String, 
         required: true 
     }

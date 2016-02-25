@@ -192,6 +192,9 @@ exports.decision = [
  * 
  * This endpoint is setup to handle the request made by the application client 
  * after they have been granted an authorization code by the user.
+ * 
+ * The server.token() function will initiate a call to the server.exchange() 
+ * function we created earlier.
  */
 exports.token = [
     server.token(),

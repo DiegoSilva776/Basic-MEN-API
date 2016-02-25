@@ -1,5 +1,25 @@
 /**
  * This file is responsible for handling user authentication.
+ * 
+ * The auth controller makes use of an OAuth2 server that is going to handle 
+ * requests with the 'bearer' security strategy, it means:
+ * 
+ *    1 - Creating an APIClient object
+ *    2 - Requesting an authorization Code
+ *    3 - Exchanging the authorization Code by an access Token
+ *    4 - Validating the access Token on each request that needs authorization
+ *        instead of using username and password on every request.
+ * 
+ * Observation:
+ * 
+ *    In order to get the access token, make a request to the API as follows with a valid client_id:
+ *       https://cyclomize-server-diegosilva776.c9users.io/api/oauth2/authorize?client_id=this_is_my_id_2&response_type=code&redirect_uri=https://cyclomize-server-diegosilva776.c9users.io:27017
+ * 
+ *    and then allow the access.
+ *    get the validation code
+ *    and then get the access token:
+ *       https://cyclomize-server-diegosilva776.c9users.io/api/oauth2/token
+ *    
  */
 
 
@@ -73,12 +93,12 @@ passport.use('client-basic', new basicStrategy(
                 return callback(err); 
             }
 
-            // No client found with that id or bad password
+            // no client found with that id or bad password
             if(!client || client.secret !== password) { 
                 return callback(null, false); 
             }
 
-            // Success
+            // success
             return callback(null, client);
         });
     }

@@ -88,8 +88,8 @@ app.use(session({
  */
 // create endpoint handlers for /api clients
 router.route('/apiClients')
-  .post(apiClientController.postClients)
-  .get(apiClientController.getClients);
+  .post(authController.isAuthenticated, apiClientController.postClients)
+  .get(authController.isAuthenticated, apiClientController.getClients);
 
 // Create endpoint handlers for oauth2 authorize
 router.route('/oauth2/authorize')
@@ -142,4 +142,5 @@ var server = app.listen(process.env.PORT, process.env.IP, function () {
     // ATTENTION RUNNING DDL METHODS!
     //-------------------------------
     //utils.DBManager.dropUsers();
+    //utils.DBManager.dropClients();
 });

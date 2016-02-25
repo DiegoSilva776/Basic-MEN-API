@@ -7,7 +7,9 @@
 
 // DEPENDENCIES
 //-------------
-var User = require('../models/userModel');
+var User   = require('../models/userModel');
+var Client = require('../models/apiClientModel');
+
 var fs   = require('fs');
 
 
@@ -49,8 +51,25 @@ module.exports = {
                     console.log('There was an error removing the User collection');
                 }
             }); 
-        }   
+        },
+        
+        
+        /**
+         * Delete all clients from the database
+         */
+        dropClients : function(){
+            console.log('Removing all Client objects from the database ...');
+              
+            Client.remove({}, function(err) {
+                if(!err){
+                    console.log('collection removed')      
+                }else{
+                    console.log('There was an error removing the User collection');
+                }
+            }); 
+        } 
     },
+    
 
 
     /**
