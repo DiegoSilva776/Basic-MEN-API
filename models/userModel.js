@@ -34,9 +34,15 @@ var UserSchema = new mongoose.Schema({
     },
     name       : String,
     facebookId : String,
-    createdAt  : String,
-    updatedAt  : String,
-    profilePic : Buffer
+    profilePic : Buffer,
+    createdAt  : {
+        type: String, 
+        required: true
+    },
+    updatedAt  : {
+        type: String, 
+        required: true
+    }
 });
 
 

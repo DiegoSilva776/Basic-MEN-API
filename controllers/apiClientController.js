@@ -45,15 +45,23 @@ exports.postClients = function(req, res) {
             return res.send(err);
 
         console.log("Client was created, creating access token for client with id "+client.id);
-
+        
         var tokenValue = Utils.getUniqueId(256);
         var tokenHashValue = Utils.getHashedValue(tokenValue);
-
+        
+        // set the expiration date to 15 days from the creation date
+        var date = new Date();
+        var newdate = new Date(date);
+        newdate.setDate(newdate.getDate() + 15); 
+        var nd = new Date(newdate);
+        
         // create a new access token
         var token = new Token({
-            value    : tokenHashValue,
-            userId   : req.user._id,
-            clientId : req.user._id +' '+ req.body.id
+            value      : tokenHashValue,
+            userId     : req.user._id,
+            clientId   : req.user._id +' '+ req.body.id,
+            createdAt  : date.toISOString(),
+            expirestAt : nd.toISOString()
         });
         
         // save the access token and check for errors
@@ -96,6 +104,30 @@ exports.deleteClient = function(req, res) {
                         opStatus: false,
                         message: 'There was an error deleting the client access token'
                     });
+                }
+            });
+        }else{
+            console.log('There was an error removing the User collection');
+        }
+    });
+};
+
+/**
+ * Endpoint used to delete a Client by its accessToken
+ */
+exports.deleteClientByAccessToken = function(token) {
+    
+    var query = {userId: token.clientId};
+    
+    Client.remove(query, function(err) {
+        if(!err){
+            
+            // delete access token that belongs to the deleted Client
+            Token.remove(query, function(err) {
+                if(!err){
+                    return false;
+                }else{
+                    return true;
                 }
             });
         }else{

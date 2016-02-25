@@ -6,10 +6,12 @@
 
 // DEPENDENCIES
 //-------------
-var passport       = require('passport');
-var basicStrategy  = require('passport-http').BasicStrategy;
-var bearerStrategy = require('passport-http-bearer').Strategy
-var utils          = require('../utils/utils.js');
+var passport         = require('passport');
+var basicStrategy    = require('passport-http').BasicStrategy;
+var bearerStrategy   = require('passport-http-bearer').Strategy
+var utils            = require('../utils/utils.js');
+var clientController = require('../controllers/apiClientController'); 
+
 
 // load necessery models
 var User   = require('../models/userModel');
@@ -82,10 +84,11 @@ passport.use(new bearerStrategy(
                 return callback(null, false); 
             }
 
-            // >>>>>> TO DO
             // check if the token has expired, if yes deletes token and its owner (Client), otherwise allow access
-            if(false){
+            if(token.hasExpired()){
+                clientController.deleteClientByAccessToken(token);
                 
+                return callback(null, false); 
             }else{
                 // find user of the access token
                 query = {_id: token.userId};

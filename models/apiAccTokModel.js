@@ -27,9 +27,38 @@ var TokenSchema   = new mongoose.Schema({
     clientId: { 
         type: String, 
         required: true
+    },
+    createdAt  : {
+        type: String, 
+        required: true
+    },
+    expirestAt : {
+        type: String,
+        required: true
     }
 });
 
+
+/**
+ * Validate the user password with the hash that is currently stored.
+ */
+TokenSchema.methods.hasExpired = function() {
+    console.log("Checking if the access token has expired.");
+    
+    var expirationDate = new Date(this.expirestAt - 20);
+    var date = new Date();
+    
+    console.log("expiration date: "+expirationDate);
+    console.log("current date: "+date);
+    
+    if(expirationDate.getMilliseconds() >= date.getMilliseconds()){
+        console.log("expired");
+        return true;    
+    }else{
+        console.log("not expired");
+        return false;
+    }
+};
 
 
 // Export the Mongoose model

@@ -22,6 +22,8 @@ var User   = require('../models/userModel');
 exports.createUsers = function (req, res) {
     console.log('\nPOST request to create a new user: ');
 
+    var date = new Date(); 
+
     // create a new user without a profile picture, the password field is hashed
     // within a model method called just the before the 'save' event.
     var user = new User({
@@ -30,8 +32,8 @@ exports.createUsers = function (req, res) {
         password   : req.query.password,
         facebookId : req.query.facebookId,
         profilePic : null,
-        createdAt  : Date.now().toString(),
-        updatedAt  : Date.now().toString()
+        createdAt  : date.toISOString(),
+        updatedAt  : date.toISOString()
     });
     
     console.log("created user: \n"+ user);
@@ -91,13 +93,14 @@ exports.updateUser = function (req, res) {
     console.log('PUT request to update the user with the id ' + req.params.id);
     
     var query = {'email' : req.params.id};
+    var date = new Date(); 
      
     User.findOne(query, function (err, user){
         if(!err && user != null){
             user.email      = req.params.id;
             user.name       = req.query.name;
             user.facebookId = req.query.facebookId;  
-            user.updatedAt  = Date.now().toString();
+            user.updatedAt  = date.toISOString();
             
             user.save();
             res.end("User updated");
