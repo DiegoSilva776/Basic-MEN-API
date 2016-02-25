@@ -1,5 +1,5 @@
 /**
- * This is the RESTful API for a basic cross-platform app.
+ * This is a RESTful like API for a basic cross-platform app.
  * 
  * Guidelines used on this API:
  *    - Keep verbs out of the base URLs
@@ -40,8 +40,8 @@ var session        = require('express-session');
 // local dependencies
 var utils = require('./utils/utils.js');
 
-// load the business controller "classes" that manages the model classes 
-// that are bonded to MongoDB via Mongoose. 
+// load the business controller that manage the model entities that are bound 
+// to MongoDB via Mongoose. 
 var userController      = require('./controllers/userController');
 var authController      = require('./controllers/authController');
 var apiClientController = require('./controllers/apiClientController');
@@ -55,29 +55,30 @@ console.log('Initializing system ...');
 // create an instance of the webserver object
 var app = express();
 
-// setup the HTTP document body parser, to get data formated as urlencoded and json
+// setup a HTTP document body parser, to get data formated as urlencoded and json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // initializes a router object with the current express router
 var router = express.Router();
 
-// creates a path to allow access to static files
+// creates a path to allow access to static files within the server
 express.static(path.join(utils.Local.APP_ROOT, utils.Local.STATIC_PATH));
 
 // configures MongoDB and attach Mongoose to it
 var url = utils.DBManager.getConnectionURL();
 mongoose.connect(url);
 
-// set view engine to ejs
+// set view engine to ejs and allow the server to render pages such as HTML
 app.set('view engine', 'ejs');
 
 // use express session support since OAuth2orize requires it
 app.use(session({
-  secret: 'Super Secret Session Key',
-  saveUninitialized: true,
-  resave: true
+    secret            : 'Super Secret Session Key',
+    saveUninitialized : true,
+    resave            : true
 }));
+
 
 
 // ROUTES && BUSINESS FUNCTIONS
@@ -85,11 +86,13 @@ app.use(session({
 /**
  * Access control related routes
  */
-// on sign in/login, returns access token on after api client creation
+// should be used on sign in/login action, returns access token after api client 
+// creation
 router.route('/apiClients')
   .post(authController.isAuthenticated, apiClientController.postClients);
 
-// on sign out, logout destroys the API client and the access token
+// should be used on sign out/logout, destroys the API client and the client 
+// access token
 router.route('/apiClients/:id')
   .delete(authController.isAuthenticated, apiClientController.deleteClient);
 
@@ -110,10 +113,6 @@ router.route('/users/:id')
 // create a separeted route to update the user profile picture
 router.route('/users/:id/updt_prfl_pic')
   .put(authController.isAuthenticated, userController.updateProfPic);
-
-// create a separeted route to authenticate the user and return an access token
-router.route('/users/:id/login')
-  .post(userController.loginUser);
 
 /**
  * put all paths under '/api'.

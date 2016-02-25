@@ -1,6 +1,6 @@
 /**
- * This class provides methods to modify the structure of the server, by
- * performing for example DDL functions on the database
+ * This class provides usefull methods to manage the database, local files, 
+ * data encryption and etc.
  */
 
 
@@ -20,25 +20,23 @@ var Token  = require('../models/apiAccTokModel');
 // Make everything within the curly braces acessible by other .js files in Node.js
 module.exports = {
 
+
     /**
-     * The DBManager prototype is responsible for dealing with DDL operations and 
-     * other dabatase utilities.
+     * The DBManager prototype is responsible for dealing with DDL operations 
+     * and other dabatase utilities.
      */
     DBManager : {
         
-        // ATTRIBUTES
         DB_PORT : '27017',
         DB_NAME : 'basicRESTMEN_DB',
         
         
-        // FUNCTIONS
         /**
          * Get the connection URL of the database
          */
         getConnectionURL : function(){
             return 'mongodb://' + process.env.IP +':'+ this.DB_PORT +'/'+ this.DB_NAME;  
         },
-        
         
         /**
          * Delete all users from the database
@@ -55,7 +53,6 @@ module.exports = {
             }); 
         },
         
-        
         /**
          * Delete all clients from the database
          */
@@ -70,7 +67,6 @@ module.exports = {
                 }
             }); 
         },
-        
         
         /**
          * Delete all clients' access tokens from the database
@@ -89,18 +85,15 @@ module.exports = {
     },
     
 
-
     /**
      * The methods within this model provide of interacting with local folders
      */
     Local : {
         
-        // ATTRIBUTES
         APP_ROOT    : __dirname + '/..',
         STATIC_PATH : '/data/',
         TEMP_DIR    : '_tmp/',
         
-        // FUNCTIONS
         /**
          * Deletes a temporary file
          */
@@ -115,9 +108,8 @@ module.exports = {
         }
     },
     
-    
     /**
-     * Return an unique identifier given its length
+     * Return a unique identifier given its length
      */
     getUniqueId : function(len){
         var buf = [];
@@ -138,17 +130,14 @@ module.exports = {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     },
     
-    
     /**
      * Get a hashed value based on a text plain input
      */
     getHashedValue : function(plainValue){
-        return crypto
-        .createHash("md5")
-        .update(plainValue)
-        .digest('hex');
+        // use your hashing algorithm of choice here
+        
+        return plainValue;
     },
-    
     
     /**
      * Get an object copy

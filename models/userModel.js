@@ -13,6 +13,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 
 
+
 // MODEL DEFINITION
 //-----------------
 /**
@@ -65,6 +66,8 @@ UserSchema.pre('save', function(callback) {
                 }
                 
                 user.password = hash;
+                console.log("Modified user "+ user);
+                
                 callback();
             });
         });
@@ -72,7 +75,6 @@ UserSchema.pre('save', function(callback) {
         return callback();
     }
 });
-
 
 /**
  * Validate the user password with the hash that is currently stored.
@@ -86,8 +88,6 @@ UserSchema.methods.verifyPassword = function(password, cb) {
         cb(null, isMatch);
     });
 };
-
-
 
 
 

@@ -1,5 +1,5 @@
 /**
- * 
+ * This is a basic implementation of a User class
  */
  
 
@@ -22,17 +22,12 @@ var User   = require('../models/userModel');
 exports.createUsers = function (req, res) {
     console.log('\nPOST request to create a new user: ');
 
-    // hashes the user password
-    var hashedPass = utils.getHashedValue(req.query.password);
-
-    console.log("raw pass: "+ req.query.password);
-    console.log("hashed pass: "+hashedPass);
-    
-    // create a new user without a profile picture
+    // create a new user without a profile picture, the password field is hashed
+    // within a model method called just the before the 'save' event.
     var user = new User({
         email      : req.query.email,
         name       : req.query.name,
-        password   : hashedPass,
+        password   : req.query.password,
         facebookId : req.query.facebookId,
         profilePic : null,
         createdAt  : Date.now().toString(),
@@ -40,7 +35,6 @@ exports.createUsers = function (req, res) {
     });
     
     console.log("created user: \n"+ user);
-    
     
     // save the user into the database
     user.save(function(err){

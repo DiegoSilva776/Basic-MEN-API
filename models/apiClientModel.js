@@ -6,15 +6,19 @@
  */
 
 
+// DEPENDENCIES
+//-------------
 // Load required packages
 var mongoose = require('mongoose');
 
 
 
+// MODEL DEFINITION
+//-----------------
 // Define our client schema
 var ClientSchema = new mongoose.Schema({
     name: { 
-        type: String, 
+        type: String,
         unique: false,
         required: true
     },
@@ -22,7 +26,7 @@ var ClientSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
-    secret: { // hashed field
+    secret: { // hashed value
         type: String,
         required: true 
     },

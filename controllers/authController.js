@@ -19,7 +19,7 @@ var Token  = require('../models/apiAccTokModel');
 
 /**
  * Passport function that handles user authentication, it checks if the user 
- * with the username exist, if it does it checks the password and return the 
+ * with the username exist, if it does, checks the password and return the 
  * appropriate result.
  */
 passport.use(new basicStrategy(
@@ -37,7 +37,7 @@ passport.use(new basicStrategy(
                 return callback(null, false); 
             }
         
-            password = utils.getHashedValue(password);
+            // password is hashed within the model
             user.verifyPassword(password, function(err, isMatch) {
                 if(err){ 
                     return callback(err); 
@@ -48,7 +48,7 @@ passport.use(new basicStrategy(
                     return callback(null, false); 
                 }
         
-                console.log("password matches the stored one");
+                console.log("user password matches the stored one");
         
                 // success
                 return callback(null, user);
@@ -60,37 +60,6 @@ passport.use(new basicStrategy(
 // authorize authentication with username and password 'basic' and access token
 exports.isAuthenticated = passport.authenticate(['basic', 'bearer'], { 
     session : false
-});
-
-
-/**
- * Checks if the user has a valid access token
- * 
- * 
- */
-passport.use('client-basic', new basicStrategy(
-    function(username, password, callback) {
-        
-        var query = {id: username};
-        
-        Client.findOne(query, function (err, client) {
-            if(err){ 
-                return callback(err); 
-            }
-
-            // no client found with that id or bad password
-            if(!client || utils.getHashedValue(client.secret) !== password) { 
-                return callback(null, false); 
-            }
-
-            // success
-            return callback(null, client);
-        });
-    }
-));
-
-exports.isClientAuthenticated = passport.authenticate('client-basic', { 
-    session : false 
 });
 
 
@@ -116,7 +85,7 @@ passport.use(new bearerStrategy(
             // >>>>>> TO DO
             // check if the token has expired, if yes deletes token and its owner (Client), otherwise allow access
             if(false){
-                 
+                
             }else{
                 // find user of the access token
                 query = {_id: token.userId};

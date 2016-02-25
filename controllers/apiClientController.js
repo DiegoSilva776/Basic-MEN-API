@@ -2,13 +2,16 @@
  * An application client is what would request access to a user account.
  * 
  * The API Client controller is responsible for adding a client object that is
- * going to handle the authentication request proccess for the oauth2 security
- * protocol.
+ * going to handle the authentication request proccess. A client has an unique
+ * access token that also validates a request, once it passes the test of the 
+ * second basic security strategy 'Bearer'.
  */
 
 
 
-// Load required packages
+// DEPENDENCIES
+//-------------
+// load required packages
 var Utils = require('../utils/utils.js');
 
 // models
@@ -18,29 +21,34 @@ var Token  = require('../models/apiAccTokModel');
 
 
 
-// Create endpoint /api/client for POST
+// FUNCTIONS
+//----------
+/**
+ * Create a new api Client object, a client is responsible for making request
+ * to the API and requesting access to the users data.
+ */ 
 exports.postClients = function(req, res) {
-    console.log("Trying to create a new API client ...");
+    console.log("Trying to create a new API Client ...");
     
-    // Create a new instance of the Client model
+    // create a new instance of the Client model
     var client = new Client();
 
-    // Set the client properties that came from the POST data
+    // set the client properties that came from the POST data
     client.name   = req.body.name;
     client.id     = req.body.id;
     client.secret = Utils.getHashedValue(req.body.secret);
     client.userId = req.user._id;
 
-    // Save the client and check for errors
+    // save the client and check for errors
     client.save(function(err) {
         if (err)
             return res.send(err);
 
+        console.log("Client was created, creating access token for client with id "+client.id);
+
         var tokenValue = Utils.getUniqueId(256);
         var tokenHashValue = Utils.getHashedValue(tokenValue);
 
-        console.log("Client was created, creating access token for client with id "+client.id);
-        
         // create a new access token
         var token = new Token({
             value    : tokenHashValue,
@@ -67,7 +75,7 @@ exports.postClients = function(req, res) {
 
 
 /**
- * Endpoint used to delete a client when the api user, logout or sign out.
+ * Endpoint used to delete a Client when an API user logs out or signs out.
  */
 exports.deleteClient = function(req, res) {
     

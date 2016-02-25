@@ -5,12 +5,15 @@
  */
 
 
-
+// DEPENDENCIES
+//-------------
 // Load required packages
 var mongoose = require('mongoose');
 
 
 
+// MODEL DEFINITION
+//-----------------
 // Define our token schema
 var TokenSchema   = new mongoose.Schema({
     value: {

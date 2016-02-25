@@ -1,6 +1,6 @@
 {
   "name": "BasicRESTMEN",
-  "description": "A basic RESTful API that using MongoDB - Mongoose, Express, and NodeJS",
+  "description": "A basic RESTful API using MongoDB - Mongoose, Express, and NodeJS",
   "version": "0.0.1",
   "author": {
     "name": "Diego Silva",
@@ -21,7 +21,10 @@
   "keywords": [
     "RESTful API",
     "app",
-    "api"
+    "api",
+    "MongoDB",
+    "Mongoose",
+    "Authentication"
   ],
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -40,24 +43,20 @@
     "passport-http-bearer": "^1.0.1",
     "router": "^1.1.4"
   },
-  "devDependencies": {
-    "dep1": "0.8.1"
-  },
   "engines": {
     "node": ">= 4.2.4"
   },
   "files": [
-    "Readme.md",
+    "README.md",
     "package.json",
     "main.js",
-    "node_modules/",
-    "log.txt"
+    "node_modules/"
   ],
   "scripts": {
     "test": "echo 'Hello there!"
   },
-  "gitHead": "",
+  "gitHead": "35b6e4d03e85deebbd98c4cce087270929beb53f",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/DiegoSilva776/BasicMENREST/issues"
   }
 }
