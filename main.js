@@ -18,7 +18,7 @@
  * 
  * Author: Diego M. Silva
  * Created at: 02/19/2016
- * Last updated: 02/23/2016 
+ * Last updated: 02/25/2016 
  */
 
 
@@ -71,13 +71,6 @@ mongoose.connect(url);
 
 // set view engine to ejs and allow the server to render pages such as HTML
 app.set('view engine', 'ejs');
-
-// use express session support since OAuth2orize requires it
-app.use(session({
-    secret            : 'Super Secret Session Key',
-    saveUninitialized : true,
-    resave            : true
-}));
 
 
 
