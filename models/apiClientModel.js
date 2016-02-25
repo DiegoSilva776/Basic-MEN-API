@@ -9,6 +9,8 @@
 // Load required packages
 var mongoose = require('mongoose');
 
+
+
 // Define our client schema
 var ClientSchema = new mongoose.Schema({
     name: { 
@@ -29,6 +31,8 @@ var ClientSchema = new mongoose.Schema({
         required: true 
     }
 });
+
+
 
 // Export the Mongoose model
 module.exports = mongoose.model('Client', ClientSchema);

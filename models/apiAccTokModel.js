@@ -9,9 +9,11 @@
 // Load required packages
 var mongoose = require('mongoose');
 
+
+
 // Define our token schema
 var TokenSchema   = new mongoose.Schema({
-    value: { // hash this guy
+    value: {
         type: String, 
         required: true 
     },
@@ -24,6 +26,8 @@ var TokenSchema   = new mongoose.Schema({
         required: true
     }
 });
+
+
 
 // Export the Mongoose model
 module.exports = mongoose.model('Token', TokenSchema);

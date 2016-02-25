@@ -9,6 +9,7 @@
 //-------------
 var User   = require('../models/userModel');
 var Client = require('../models/apiClientModel');
+var Token  = require('../models/apiAccTokModel');
 
 var fs   = require('fs');
 
@@ -64,7 +65,23 @@ module.exports = {
                 if(!err){
                     console.log('collection removed')      
                 }else{
-                    console.log('There was an error removing the User collection');
+                    console.log('There was an error removing the Client collection');
+                }
+            }); 
+        },
+        
+        
+        /**
+         * Delete all clients' access tokens from the database
+         */
+        dropTokens : function(){
+            console.log('Removing all Client access tokens objects from the database ...');
+              
+            Token.remove({}, function(err) {
+                if(!err){
+                    console.log('collection removed')      
+                }else{
+                    console.log('There was an error removing the Token collection');
                 }
             }); 
         } 

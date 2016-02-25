@@ -45,7 +45,6 @@ var utils = require('./utils/utils.js');
 var userController      = require('./controllers/userController');
 var authController      = require('./controllers/authController');
 var apiClientController = require('./controllers/apiClientController');
-var oauth2Controller    = require('./controllers/oauth2Controller');
 
 
 
@@ -86,19 +85,13 @@ app.use(session({
 /**
  * Access control related routes
  */
-// create endpoint handlers for /api clients
+// on sign in/login, returns access token on after api client creation
 router.route('/apiClients')
-  .post(authController.isAuthenticated, apiClientController.postClients)
-  .get(authController.isAuthenticated, apiClientController.getClients);
+  .post(authController.isAuthenticated, apiClientController.postClients);
 
-// Create endpoint handlers for oauth2 authorize
-router.route('/oauth2/authorize')
-  .get(authController.isAuthenticated, oauth2Controller.authorization)
-  .post(authController.isAuthenticated, oauth2Controller.decision);
-
-// Create endpoint handlers for oauth2 token
-router.route('/oauth2/token')
-  .post(authController.isClientAuthenticated, oauth2Controller.token);
+// on sign out, logout destroys the API client and the access token
+router.route('/apiClients/:id')
+  .delete(authController.isAuthenticated, apiClientController.deleteClient);
 
 /**
  * User related routes
@@ -132,15 +125,13 @@ app.use('/api', router);
 // SERVER
 //-------
 var server = app.listen(process.env.PORT, process.env.IP, function () {
+    console.log("OurMemex API listening at http://%s:%s", host, port);
 
-    // boot up the server
     var host = server.address().address;
     var port = server.address().port;
-
-    console.log("OurMemex API listening at http://%s:%s", host, port);
     
-    // ATTENTION RUNNING DDL METHODS!
-    //-------------------------------
+    // Reset user related collections on the database
     //utils.DBManager.dropUsers();
     //utils.DBManager.dropClients();
+    //utils.DBManager.dropTokens();
 });
