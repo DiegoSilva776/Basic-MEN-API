@@ -28,7 +28,7 @@ exports.postClients = function(req, res) {
     // Set the client properties that came from the POST data
     client.name   = req.body.name;
     client.id     = req.body.id;
-    client.secret = req.body.secret;
+    client.secret = Utils.getHashedValue(req.body.secret);
     client.userId = req.user._id;
 
     // Save the client and check for errors
@@ -36,14 +36,14 @@ exports.postClients = function(req, res) {
         if (err)
             return res.send(err);
 
-        console.log("Client was created, creating access token for client with id "+client.id);
-        console.log(Utils.getUniqueId(256)+'\n');
-        console.log(req.user._id+'\n');
-        console.log(client.clientId);
+        var tokenValue = Utils.getUniqueId(256);
+        var tokenHashValue = Utils.getHashedValue(tokenValue);
 
+        console.log("Client was created, creating access token for client with id "+client.id);
+        
         // create a new access token
         var token = new Token({
-            value    : Utils.getUniqueId(256),
+            value    : tokenHashValue,
             userId   : req.user._id,
             clientId : req.user._id +' '+ req.body.id
         });
@@ -54,7 +54,9 @@ exports.postClients = function(req, res) {
                 return res.send(err);
             }
         
-            console.log("Returning access token for client");
+            token.value = tokenValue;
+            
+            console.log("Returning access token for client: \n"+ token);
             res.json({ 
                 message: 'This is your access token, be careful with it!', 
                 token: token

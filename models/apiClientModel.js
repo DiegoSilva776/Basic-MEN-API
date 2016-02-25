@@ -15,15 +15,15 @@ var mongoose = require('mongoose');
 var ClientSchema = new mongoose.Schema({
     name: { 
         type: String, 
-        unique: false, 
+        unique: false,
         required: true
     },
     id: { 
         type: String, 
         required: true 
     },
-    secret: { // hash this guy
-        type: String, 
+    secret: { // hashed field
+        type: String,
         required: true 
     },
     userId: { // the user who owns the application client

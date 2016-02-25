@@ -9,6 +9,7 @@
 var passport       = require('passport');
 var basicStrategy  = require('passport-http').BasicStrategy;
 var bearerStrategy = require('passport-http-bearer').Strategy
+var utils          = require('../utils/utils.js');
 
 // load necessery models
 var User   = require('../models/userModel');
@@ -36,7 +37,7 @@ passport.use(new basicStrategy(
                 return callback(null, false); 
             }
         
-            // make sure the password is correct
+            password = utils.getHashedValue(password);
             user.verifyPassword(password, function(err, isMatch) {
                 if(err){ 
                     return callback(err); 
@@ -46,6 +47,8 @@ passport.use(new basicStrategy(
                 if(!isMatch){ 
                     return callback(null, false); 
                 }
+        
+                console.log("password matches the stored one");
         
                 // success
                 return callback(null, user);
@@ -62,6 +65,8 @@ exports.isAuthenticated = passport.authenticate(['basic', 'bearer'], {
 
 /**
  * Checks if the user has a valid access token
+ * 
+ * 
  */
 passport.use('client-basic', new basicStrategy(
     function(username, password, callback) {
@@ -74,7 +79,7 @@ passport.use('client-basic', new basicStrategy(
             }
 
             // no client found with that id or bad password
-            if(!client || client.secret !== password) { 
+            if(!client || utils.getHashedValue(client.secret) !== password) { 
                 return callback(null, false); 
             }
 
@@ -96,7 +101,7 @@ exports.isClientAuthenticated = passport.authenticate('client-basic', {
 passport.use(new bearerStrategy(
     function(accessToken, callback) {
         
-        var query = {value: accessToken};
+        var query = {value: utils.getHashedValue(accessToken)};
         
         Token.findOne(query, function(err, token) {
             if(err){ 
@@ -108,24 +113,30 @@ passport.use(new bearerStrategy(
                 return callback(null, false); 
             }
 
-            // find user of the access token
-            query = {_id: token.userId};
-
-            User.findOne(query, function(err, user) {
-                if(err){ 
-                    return callback(err); 
-                }
-
-                // no user found
-                if(!user){ 
-                    return callback(null, false); 
-                }
-
-                // simple example with no scope
-                callback(null, user, { 
-                    scope: '*' 
-                });
-            });
+            // >>>>>> TO DO
+            // check if the token has expired, if yes deletes token and its owner (Client), otherwise allow access
+            if(false){
+                 
+            }else{
+                // find user of the access token
+                query = {_id: token.userId};
+    
+                User.findOne(query, function(err, user) {
+                    if(err){ 
+                        return callback(err); 
+                    }
+    
+                    // no user found
+                    if(!user){ 
+                        return callback(null, false); 
+                    }
+    
+                    // simple example with no scope
+                    callback(null, user, { 
+                        scope: '*' 
+                    });
+                });    
+            }
         });
     }
 ));

@@ -7,17 +7,18 @@
 
 // DEPENDENCIES
 //-------------
+var fs     = require('fs');
+var crypto = require('crypto');
+
+// models
 var User   = require('../models/userModel');
 var Client = require('../models/apiClientModel');
 var Token  = require('../models/apiAccTokModel');
-
-var fs   = require('fs');
 
 
 
 // Make everything within the curly braces acessible by other .js files in Node.js
 module.exports = {
-
 
     /**
      * The DBManager prototype is responsible for dealing with DDL operations and 
@@ -135,5 +136,25 @@ module.exports = {
      */
     getRandomInt : function(min, max){
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+    
+    
+    /**
+     * Get a hashed value based on a text plain input
+     */
+    getHashedValue : function(plainValue){
+        return crypto
+        .createHash("md5")
+        .update(plainValue)
+        .digest('hex');
+    },
+    
+    
+    /**
+     * Get an object copy
+     */
+    getCopy : function(obj) {
+        var copy = Object.assign({}, obj);
+        return copy;
     }
 };
