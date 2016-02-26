@@ -1,18 +1,20 @@
 # BasicMENREST
 
-    This project aims to increase the speed of your development, by offering
-    a user class with simple authentication strategies:
+    BasicMENREST - API provides a webserver that uses MongoDB/Mongoose 
+    framework to build a database system, Express for the webserver itself, and 
+    NodeJS. The Security was implmented with Passport.
+
+    This project aims to increase the speed of your REST API development, by 
+    offering a user class with simple authentication strategies:
         
         * first strategy  : 'username & password'
         * second strategy : 'access token'
         
     and a simple organization for your web service.
 
-    This is a basic template for a multipurpose API. I've created it in order
-    to provide a service that can be called from different plataforms such as 
-    Mobile and Web. BasicMENREST provides a webserver that uses MongoDB/Mongoose 
-    framework to build the database, Express for the webserver itself, and 
-    NodeJS.
+    This is a basic template for a multipurpose API. Install and customize this
+    webservice to meet your system architecture needs, and model your system 
+    connecting the User entity to the other pieces of your software.
     
 
 ## Environment setup
@@ -48,7 +50,8 @@
     
 ## Security
     
-    Please make sure to implement your own hash function on ./utils/utils.js within the function 'getHashedValue'
+    Please make sure to implement your own hash function on ./utils/utils.js 
+    within the function 'getHashedValue'
 
 
 ## References
