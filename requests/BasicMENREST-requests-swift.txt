@@ -1,0 +1,290 @@
+Requests to the BasicMENREST API:
+
+	
+Swift
+
+	Notes:
+		* When running your code in production, replace on the url '//127.0.0.1:3000' by the server address, for ex: "//c9.users-diegosilva.BMENREST"
+		* Once you start using the access token replace 'token' by the value of the 'value' field of the access token that you got after the login/signin operation
+
+
+	/**
+	 * Create user
+	 */
+	import Foundation
+
+	let headers = [
+	  "cache-control": "no-cache",
+	  "postman-token": "7e9e8227-b0c9-8a95-8c44-0c26b14f5080"
+	]
+
+	var request = NSMutableURLRequest(URL: NSURL(string: "http://127.0.0.1:3000/api/users?email=user1%40email.com&name=user1&password=123&facebookId=asdf1234wdf")!,
+	                                        cachePolicy: .UseProtocolCachePolicy,
+	                                    timeoutInterval: 10.0)
+	request.HTTPMethod = "POST"
+	request.allHTTPHeaderFields = headers
+
+	let session = NSURLSession.sharedSession()
+	let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+	  if (error != nil) {
+	    println(error)
+	  } else {
+	    let httpResponse = response as? NSHTTPURLResponse
+	    println(httpResponse)
+	  }
+	})
+
+	dataTask.resume() 
+
+
+
+	/**
+	 * Create API's client (called on login/sign in)
+	 */
+	import Foundation
+
+	let headers = [
+	  "authorization": "Basic dXNlcjFAZW1haWwuY29tOjEyMw==",
+	  "cache-control": "no-cache",
+	  "postman-token": "9fdd6b41-b64d-fb01-0f5e-7908534ad8b3",
+	  "content-type": "application/x-www-form-urlencoded"
+	]
+
+	var postData = NSMutableData(data: "name=BasicRESTMENClient - user1".dataUsingEncoding(NSUTF8StringEncoding)!)
+	postData.appendData("&id=user1@email.com".dataUsingEncoding(NSUTF8StringEncoding)!)
+	postData.appendData("&secret=123".dataUsingEncoding(NSUTF8StringEncoding)!)
+
+	var request = NSMutableURLRequest(URL: NSURL(string: "http://127.0.0.1:3000/api/apiClients")!,
+	                                        cachePolicy: .UseProtocolCachePolicy,
+	                                    timeoutInterval: 10.0)
+	request.HTTPMethod = "POST"
+	request.allHTTPHeaderFields = headers
+	request.HTTPBody = postData
+
+	let session = NSURLSession.sharedSession()
+	let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+	  if (error != nil) {
+	    println(error)
+	  } else {
+	    let httpResponse = response as? NSHTTPURLResponse
+	    println(httpResponse)
+	  }
+	})
+
+	dataTask.resume()
+
+
+
+	/**
+	 * Delete API's client (called on logout/sign out)
+	 */
+	import Foundation
+
+	let headers = [
+	  "authorization": "Bearer token",
+	  "cache-control": "no-cache",
+	  "postman-token": "aa0764a9-5c97-ce93-a03e-3eab29f421b1"
+	]
+
+	var request = NSMutableURLRequest(URL: NSURL(string: "https://cyclomize-server-diegosilva776.c9users.io/api/apiClients/user1@email.com")!,
+	                                        cachePolicy: .UseProtocolCachePolicy,
+	                                    timeoutInterval: 10.0)
+	request.HTTPMethod = "DELETE"
+	request.allHTTPHeaderFields = headers
+
+	let session = NSURLSession.sharedSession()
+	let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+	  if (error != nil) {
+	    println(error)
+	  } else {
+	    let httpResponse = response as? NSHTTPURLResponse
+	    println(httpResponse)
+	  }
+	})
+
+	dataTask.resume() 
+
+
+
+	/**
+	 * Get all users
+	 */
+	import Foundation
+
+	let headers = [
+	  "authorization": "Bearer token",
+	  "cache-control": "no-cache",
+	  "postman-token": "d87190e7-b732-e28b-54ee-44921d50c5a6"
+	]
+
+	var request = NSMutableURLRequest(URL: NSURL(string: "http://127.0.0.1:3000/api/users")!,
+	                                        cachePolicy: .UseProtocolCachePolicy,
+	                                    timeoutInterval: 10.0)
+	request.HTTPMethod = "GET"
+	request.allHTTPHeaderFields = headers
+
+	let session = NSURLSession.sharedSession()
+	let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+	  if (error != nil) {
+	    println(error)
+	  } else {
+	    let httpResponse = response as? NSHTTPURLResponse
+	    println(httpResponse)
+	  }
+	})
+
+	dataTask.resume() 
+
+
+
+	/**
+	 * Get user by id
+	 */
+	import Foundation
+
+	let headers = [
+	  "authorization": "Bearer token",
+	  "cache-control": "no-cache",
+	  "postman-token": "ccb4bcd8-b2b7-7a31-0106-509bbf4b3c02"
+	]
+
+	var request = NSMutableURLRequest(URL: NSURL(string: "http://127.0.0.1:3000/api/users/user1@email.com")!,
+	                                        cachePolicy: .UseProtocolCachePolicy,
+	                                    timeoutInterval: 10.0)
+	request.HTTPMethod = "GET"
+	request.allHTTPHeaderFields = headers
+
+	let session = NSURLSession.sharedSession()
+	let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+	  if (error != nil) {
+	    println(error)
+	  } else {
+	    let httpResponse = response as? NSHTTPURLResponse
+	    println(httpResponse)
+	  }
+	})
+
+	dataTask.resume() 
+
+
+
+	/**
+	 * Update user
+	 */
+	import Foundation
+
+	let headers = [
+	  "authorization": "Bearer token",
+	  "cache-control": "no-cache",
+	  "postman-token": "e4f7b2ea-72bc-a2ca-73f3-4865594ce360"
+	]
+
+	var request = NSMutableURLRequest(URL: NSURL(string: "http://127.0.0.1:3000/api/users/user1@email.com?name=Macaco&facebookId=%3Bsdlfkq234%3Bawdskfjas")!,
+	                                        cachePolicy: .UseProtocolCachePolicy,
+	                                    timeoutInterval: 10.0)
+	request.HTTPMethod = "PUT"
+	request.allHTTPHeaderFields = headers
+
+	let session = NSURLSession.sharedSession()
+	let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+	  if (error != nil) {
+	    println(error)
+	  } else {
+	    let httpResponse = response as? NSHTTPURLResponse
+	    println(httpResponse)
+	  }
+	})
+
+	dataTask.resume()
+
+
+
+	/**
+	 * Update the user's profile picture
+	 */
+	import Foundation
+
+	let headers = [
+	  "content-type": "multipart/form-data; boundary=---011000010111000001101001",
+	  "authorization": "Bearer token",
+	  "cache-control": "no-cache",
+	  "postman-token": "f17766a6-55bd-5bdc-7b55-50359c4bd77d"
+	]
+	let parameters = [
+	  [
+	    "name": "userPhoto",
+	    "fileName": "professional_profile.jpg"
+	  ]
+	]
+
+	let boundary = "---011000010111000001101001"
+
+	var body = ""
+	var error: NSError? = nil
+	for param in parameters {
+	  let paramName = param["name"]!
+	  body += "--\(boundary)\r\n"
+	  body += "Content-Disposition:form-data; name=\"\(paramName)\""
+	  if let filename = param["fileName"] {
+	    let contentType = param["content-type"]!
+	    let fileContent = String(contentsOfFile: filename, encoding: NSUTF8StringEncoding, error: &error)
+	    if (error != nil) {
+	      println(error)
+	    }
+	    body += "; filename=\"\(filename)\"\r\n"
+	    body += "Content-Type: \(contentType)\r\n\r\n"
+	    body += fileContent!
+	  } else if let paramValue = param["value"] {
+	    body += "\r\n\r\n\(paramValue)"
+	  }
+	}
+
+	var request = NSMutableURLRequest(URL: NSURL(string: "http://127.0.0.1:3000/api/users/user1@email.com/updt_prfl_pic")!,
+	                                        cachePolicy: .UseProtocolCachePolicy,
+	                                    timeoutInterval: 10.0)
+	request.HTTPMethod = "PUT"
+	request.allHTTPHeaderFields = headers
+	request.HTTPBody = postData
+
+	let session = NSURLSession.sharedSession()
+	let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+	  if (error != nil) {
+	    println(error)
+	  } else {
+	    let httpResponse = response as? NSHTTPURLResponse
+	    println(httpResponse)
+	  }
+	})
+
+	dataTask.resume() 
+
+
+
+	/**
+	 * Deletes a user
+ 	 */
+ 	import Foundation
+
+	let headers = [
+	  "authorization": "Bearer token",
+	  "cache-control": "no-cache",
+	  "postman-token": "e36f1617-e8d4-c92b-e9ba-1e0db4ac23c8"
+	]
+
+	var request = NSMutableURLRequest(URL: NSURL(string: "http://127.0.0.1:3000/api/users/user1@email.com")!,
+	                                        cachePolicy: .UseProtocolCachePolicy,
+	                                    timeoutInterval: 10.0)
+	request.HTTPMethod = "DELETE"
+	request.allHTTPHeaderFields = headers
+
+	let session = NSURLSession.sharedSession()
+	let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+	  if (error != nil) {
+	    println(error)
+	  } else {
+	    let httpResponse = response as? NSHTTPURLResponse
+	    println(httpResponse)
+	  }
+	})
+
+	dataTask.resume()

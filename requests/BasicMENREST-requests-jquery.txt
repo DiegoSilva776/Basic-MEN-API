@@ -1,0 +1,180 @@
+Requests to the BasicMENREST API:
+
+	
+JQuery
+
+	Notes:
+		* When running your code in production, replace on the url '//127.0.0.1:3000' by the server address, for ex: "//c9.users-diegosilva.BMENREST"
+		* Once you start using the access token replace 'token' by the value of the 'value' field of the access token that you got after the login/signin operation
+
+
+	/**
+	 * Create user
+	 */
+	var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "http://127.0.0.1:3000/api/users?email=user1%40email.com&name=user1&password=123&facebookId=asdf1234wdf",
+        "method": "POST",
+        "headers": {
+            "cache-control": "no-cache",
+            "postman-token": "dae41bac-24e9-f424-b26d-f8c9f642d4c9"
+        }
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });
+    
+
+	/**
+	 * Create API's client (called on login/sign in)
+	 */
+	var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "http://127.0.0.1:3000/api/apiClients",
+        "method": "POST",
+        "headers": {
+            "authorization": "Basic dXNlcjFAZW1haWwuY29tOjEyMw==",
+            "cache-control": "no-cache",
+            "postman-token": "deaf5ecc-3db4-4fd5-4884-f1180aa78016",
+            "content-type": "application/x-www-form-urlencoded"
+        },
+        "data": {
+            "name": "BasicRESTMENClient - user1",
+            "id": "user1@email.com",
+            "secret": "123"
+        }
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });
+
+
+	/**
+	 * Delete API's client (called on logout/sign out)
+	 */
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://cyclomize-server-diegosilva776.c9users.io/api/apiClients/user1@email.com",
+        "method": "DELETE",
+        "headers": {
+            "authorization": "Bearer RzEF4G8eiNALdn5GchUcpfONxoENbXkDya5xT7ePsPntdtgv8nI2xgnbjIHNs2ocDT3SpcsApcm0HhrAZmQcku67daNhUeSCLMY01QwUivvTFuGAD2Kh7tddk0SJ8VaRe8ESZnTAQriJQ7X0noAlaoAQ7VRie51Uufpf1dNCkYhaSOtDYY9ZoL9iDDdOAW7JuVcnFPQAziLQiLDJmrQiA0S845zkB24iYP3aNITHvUuTMoGFNEURcMOs3F96EWOV",
+            "cache-control": "no-cache",
+            "postman-token": "2a1a9fee-2cab-7115-5bb9-be9a84358a03"
+        }
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });        
+        
+
+	/**
+	 * Get all users
+	 */
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "http://127.0.0.1:3000/api/users",
+        "method": "GET",
+        "headers": {
+            "authorization": "Bearer SQ9vkxXHfewLQ8RVv58O6blZBXKPJ5hBTmUxFhbrcfJJ1566Vl5sEb4CHzBEnjN4hfLyOsVm7G3gRRv4B48rHHaPPtqKHrY8oGqOfLOyvQNZS0TVS3BWQA4gXUXGkIlw3s7e0eRE0FPoZs4DzULVvmCMnFyj5DIg6bJZ98H8vFKN394r97hNTD7jRRLACBUjT4wp255wikapKFpPoxcl08VVyIVhGMkl1vCzU5uOL23P1oQJTr7M2buIxKnKPeIw",
+            "cache-control": "no-cache",
+            "postman-token": "b0fe1d47-232e-3772-7177-5d9af8fa485e"
+        }
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });
+     
+
+	/**
+	 * Get user by id
+	 */
+     var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "http://127.0.0.1:3000/api/users/user1@email.com",
+        "method": "GET",
+        "headers": {
+            "authorization": "Bearer SQ9vkxXHfewLQ8RVv58O6blZBXKPJ5hBTmUxFhbrcfJJ1566Vl5sEb4CHzBEnjN4hfLyOsVm7G3gRRv4B48rHHaPPtqKHrY8oGqOfLOyvQNZS0TVS3BWQA4gXUXGkIlw3s7e0eRE0FPoZs4DzULVvmCMnFyj5DIg6bJZ98H8vFKN394r97hNTD7jRRLACBUjT4wp255wikapKFpPoxcl08VVyIVhGMkl1vCzU5uOL23P1oQJTr7M2buIxKnKPeIw",
+            "cache-control": "no-cache",
+            "postman-token": "307ab7ea-6fe2-b74b-dd6b-15307d21b8d0"
+        }
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });
+
+
+	/**
+	 * Update user
+	 */
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "http://127.0.0.1:3000/api/users/user1@email.com?name=Macaco&facebookId=%3Bsdlfkq234%3Bawdskfjas",
+        "method": "PUT",
+        "headers": {
+            "authorization": "Bearer SQ9vkxXHfewLQ8RVv58O6blZBXKPJ5hBTmUxFhbrcfJJ1566Vl5sEb4CHzBEnjN4hfLyOsVm7G3gRRv4B48rHHaPPtqKHrY8oGqOfLOyvQNZS0TVS3BWQA4gXUXGkIlw3s7e0eRE0FPoZs4DzULVvmCMnFyj5DIg6bJZ98H8vFKN394r97hNTD7jRRLACBUjT4wp255wikapKFpPoxcl08VVyIVhGMkl1vCzU5uOL23P1oQJTr7M2buIxKnKPeIw",
+            "cache-control": "no-cache",
+            "postman-token": "d7a19249-357e-0130-dd5c-004503b96d31"
+        }
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });
+
+
+	/**
+	 * Update the user's profile picture
+	 */ 
+     var form = new FormData();
+    form.append("userPhoto", "professional_profile.jpg");
+
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "http://127.0.0.1:3000/api/users/user1@email.com/updt_prfl_pic",
+        "method": "PUT",
+        "headers": {
+            "authorization": "Bearer SQ9vkxXHfewLQ8RVv58O6blZBXKPJ5hBTmUxFhbrcfJJ1566Vl5sEb4CHzBEnjN4hfLyOsVm7G3gRRv4B48rHHaPPtqKHrY8oGqOfLOyvQNZS0TVS3BWQA4gXUXGkIlw3s7e0eRE0FPoZs4DzULVvmCMnFyj5DIg6bJZ98H8vFKN394r97hNTD7jRRLACBUjT4wp255wikapKFpPoxcl08VVyIVhGMkl1vCzU5uOL23P1oQJTr7M2buIxKnKPeIw",
+            "cache-control": "no-cache",
+            "postman-token": "a6489158-bff3-8602-29a6-a564c608068c"
+        },
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "data": form
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });
+
+
+	/**
+	 * Deletes a user
+ 	 */
+ 	var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "http://127.0.0.1:3000/api/users/user1@email.com",
+        "method": "DELETE",
+        "headers": {
+            "authorization": "Bearer SQ9vkxXHfewLQ8RVv58O6blZBXKPJ5hBTmUxFhbrcfJJ1566Vl5sEb4CHzBEnjN4hfLyOsVm7G3gRRv4B48rHHaPPtqKHrY8oGqOfLOyvQNZS0TVS3BWQA4gXUXGkIlw3s7e0eRE0FPoZs4DzULVvmCMnFyj5DIg6bJZ98H8vFKN394r97hNTD7jRRLACBUjT4wp255wikapKFpPoxcl08VVyIVhGMkl1vCzU5uOL23P1oQJTr7M2buIxKnKPeIw",
+            "cache-control": "no-cache",
+            "postman-token": "4a85f280-5385-ef0a-754b-cc5dde3a39f3"
+        }
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });

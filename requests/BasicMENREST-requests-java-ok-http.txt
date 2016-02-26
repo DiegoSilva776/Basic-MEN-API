@@ -1,0 +1,140 @@
+Requests to the BasicMENREST API:
+
+
+Java (Ok HTTP):
+
+	Notes:
+		* When running your code in production, replace on the url '//127.0.0.1:3000' by the server address, for ex: "//c9.users-diegosilva.BMENREST"
+		* Once you start using the access token replace 'token' by the value of the 'value' field of the access token that you got after the login/signin operation
+
+	/**
+	 * Create user
+	 */
+	OkHttpClient client = new OkHttpClient();
+
+	Request request = new Request.Builder()
+	  .url("http://127.0.0.1:3000/api/users?email=user1%40email.com&name=user1&password=123&facebookId=asdf1234wdf")
+	  .post(null)
+	  .addHeader("cache-control", "no-cache")
+	  .addHeader("postman-token", "7f0cf902-a839-36fb-a41d-c196c531b319")
+	  .build();
+
+	Response response = client.newCall(request).execute();
+
+
+	/**
+	 * Create API's client (called on login/sign in)
+	 */
+	OkHttpClient client = new OkHttpClient();
+
+	MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+	RequestBody body = RequestBody.create(mediaType, "name=BasicRESTMENClient%20-%20user1&id=user1%40email.com&secret=123");
+	Request request = new Request.Builder()
+	  .url("http://127.0.0.1:3000/api/apiClients")
+	  .post(body)
+	  .addHeader("authorization", "Basic dXNlcjFAZW1haWwuY29tOjEyMw==")
+	  .addHeader("cache-control", "no-cache")
+	  .addHeader("postman-token", "cf67e879-fbdb-053c-db76-5e297663e1a4")
+	  .addHeader("content-type", "application/x-www-form-urlencoded")
+	  .build();
+
+	Response response = client.newCall(request).execute();
+
+
+	/**
+	 * Delete API's client (called on logout/sign out)
+	 */
+	OkHttpClient client = new OkHttpClient();
+
+	Request request = new Request.Builder()
+	  .url("https://cyclomize-server-diegosilva776.c9users.io/api/apiClients/user1@email.com")
+	  .delete(null)
+	  .addHeader("authorization", "Bearer token")
+	  .addHeader("cache-control", "no-cache")
+	  .addHeader("postman-token", "65b22e76-7c45-306e-53d8-f027ec3cd170")
+	  .build();
+
+	Response response = client.newCall(request).execute();
+
+
+	/**
+	 * Get all users
+	 */
+	OkHttpClient client = new OkHttpClient();
+
+	Request request = new Request.Builder()
+	  .url("http://127.0.0.1:3000/api/users")
+	  .get()
+	  .addHeader("authorization", "Bearer token")
+	  .addHeader("cache-control", "no-cache")
+	  .addHeader("postman-token", "8a1eb652-406d-409a-78b3-d24b9f6ef7ec")
+	  .build();
+
+	Response response = client.newCall(request).execute();
+
+
+	/**
+	 * Get user by id
+	 */
+	OkHttpClient client = new OkHttpClient();
+
+	Request request = new Request.Builder()
+	  .url("http://127.0.0.1:3000/api/users/user1@email.com")
+	  .get()
+	  .addHeader("authorization", "Bearer token")
+	  .addHeader("cache-control", "no-cache")
+	  .addHeader("postman-token", "32738479-0711-caf2-f389-0f7caf112c5e")
+	  .build();
+
+	Response response = client.newCall(request).execute();
+
+
+	/**
+	 * Update user
+	 */
+	OkHttpClient client = new OkHttpClient();
+
+	Request request = new Request.Builder()
+	  .url("http://127.0.0.1:3000/api/users/user1@email.com?name=Macaco&facebookId=%3Bsdlfkq234%3Bawdskfjas")
+	  .put(null)
+	  .addHeader("authorization", "Bearer token")
+	  .addHeader("cache-control", "no-cache")
+	  .addHeader("postman-token", "7080773c-b457-adc6-37e3-9c8b751a5dd4")
+	  .build();
+
+	Response response = client.newCall(request).execute();
+
+
+	/**
+	 * Update the user's profile picture
+	 */
+	OkHttpClient client = new OkHttpClient();
+
+	MediaType mediaType = MediaType.parse("multipart/form-data; boundary=---011000010111000001101001");
+	RequestBody body = RequestBody.create(mediaType, "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"userPhoto\"\r\n\r\n\r\n-----011000010111000001101001--");
+	Request request = new Request.Builder()
+	  .url("http://127.0.0.1:3000/api/users/user1@email.com/updt_prfl_pic")
+	  .put(body)
+	  .addHeader("content-type", "multipart/form-data; boundary=---011000010111000001101001")
+	  .addHeader("authorization", "Bearer token")
+	  .addHeader("cache-control", "no-cache")
+	  .addHeader("postman-token", "3718a075-3f6e-c6ff-f03c-9e1e522934b4")
+	  .build();
+
+	Response response = client.newCall(request).execute();
+
+
+	/**
+	 * Deletes a user
+ 	 */
+ 	OkHttpClient client = new OkHttpClient();
+
+	Request request = new Request.Builder()
+	  .url("http://127.0.0.1:3000/api/users/user1@email.com")
+	  .delete(null)
+	  .addHeader("authorization", "Bearer token")
+	  .addHeader("cache-control", "no-cache")
+	  .addHeader("postman-token", "6dc48720-e525-55db-a524-36b2b11d7782")
+	  .build();
+
+	Response response = client.newCall(request).execute();

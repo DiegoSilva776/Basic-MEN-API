@@ -19,7 +19,7 @@
 
 ## Environment setup
 
-    NodeJS setup on Ubuntu machine (C9), run the commands
+    NodeJS and MongoDB setup
     
         1 - Download and install Node
             https://nodejs.org/en/download/
@@ -28,12 +28,15 @@
         2 - Download and install MongoDB
             http://www.tutorialspoint.com/mongodb/mongodb_environment.htm
             
-            OBS: if you are a Windows user stop at this line of the tutorialspoint instructions for installation, don't execute it.
+            OBS: if you are using Windows, stop following the instructions of the tutorial 
+                 on the line bellow, don't execute it:
+                 
                 D:\set up\mongodb\bin>mongod.exe --dbpath "d:\set up\mongodb\data"
         
-        3 - Place the BasicMENREST files in the folder you want to keep the project in, clone the repo or simply download it, extract it and move the files there
+        3 - Place the BasicMENREST files in the folder you want to keep the project in. Clone 
+            the repo or simply download the files and extract them in the project folder.
             
-        4 - Set your environment variables on 'main.js' on 'INITIALIZATION' ex:
+        4 - Set your environment variables on 'main.js' on the 'INITIALIZATION' section ex:
             
             // setup the environment and database variables
             env.vars.IP             = 127.0.0.1;  
@@ -44,14 +47,14 @@
         5 - Install the project dependencies:
             npm install
         
-        6 - Create the folders 'data/_tmp' within the root folder of your project
+        6 - Create the folders 'data/_tmp' within the root folder of your project.
            
         7 - Start MongoDB server and let it 'waiting for connections' ex:
             open a terminal and run:
                 "D:/path to the installation directory/mongodb/bin/mongod.exe" --dbpath "D:/path to the 'data' folder you've just created within the root folder of your project"
             
-            Obs: if you started the MongoDB server during the MongoDB installation, make sure to kill the process
-            only one instance of 'mongod.exe' can be running.
+            Obs: if you started the MongoDB server during the MongoDB installation, make 
+            sure to kill the process only one instance of 'mongod.exe' can be running.
             
             open another terminal and run:
                 "D:/path to the root directory of your project">node main.js
@@ -61,8 +64,10 @@
 
 ## Requests
 
+    Download the files under the '/requests' folder, read the one you need and 
+    check how to do each request. So far I've tested the requests only with POSTMAN
+    but I'm going to update them here once I do the actual requests.
     
-
     
     
 ## Security
