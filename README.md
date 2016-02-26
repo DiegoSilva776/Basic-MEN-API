@@ -21,19 +21,36 @@
 
     NodeJS setup on Ubuntu machine (C9), run the commands
     
-        1 - Install Node
-            $ cd /tmp
-            $ wget http://nodejs.org/dist/v0.12.0/node-v0.12.0-linux-x64.tar.gz
-            $ tar xvfz node-v0.12.0-linux-x64.tar.gz
-            $ mkdir -p /usr/local/nodejs
-            $ mv node-v0.12.0-linux-x64/* /usr/local/nodejs
+        1 - Download and install Node
+            https://nodejs.org/en/download/
+            http://www.tutorialspoint.com/nodejs/nodejs_environment_setup.htm
         
-        2 - Create a global variable for node
-            $ export PATH=$PATH:/usr/local/nodejs/bin
+        2 - Download and install MongoDB
+            http://www.tutorialspoint.com/mongodb/mongodb_environment.htm
         
-        4 - Navigate to your project's folder
+        3 - Place the BasicMENREST files on the folder you want to keep the project, 
+            clone the repo or simply move the files there
+            
+        4 - Set your environment variables on 'main.js' on 'INITIALIZATION' ex:
+            
+            // setup the environment and database variables
+            env.vars.IP             = 127.0.0.1;  
+            env.vars.PORT           = 3000;
+            utils.DBManager.DB_PORT = 27017;
+            utils.DBManager.DB_NAME = "basicRESTMEN_DB";
         
-        5 - Clone BasicMENREST repository
+        5 - Create a data folder to hold your db, within root folder of your project:
+            mkdir data
+            
+        3 - Start MongoDB server and let it 'waiting for connections' ex:
+            D:/path to the installation directory/mongodb/bin/mongod.exe --dbpath "D:/path to the root folder of your project/data"
+            D:/path to the installation directory/mongodb/bin/mongo.exe
+            
+        5 - Starting making requests to the API:
+    
+
+## Requests
+
     
     
 ## Installation

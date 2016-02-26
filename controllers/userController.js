@@ -153,12 +153,15 @@ exports.deleteUser = function (req, res) {
     
     // get the user id to use it as the base for the temporary filename
     var filename = req.params.id + "-profpic.png";
+     
+    console.log("file location: " + utils.Local.appRoot + utils.Local.STATIC_PATH + utils.Local.TEMP_DIR)
+    console.log("filename: " + filename);
     
     // creates a storage function variable to save the file from locally    
     var storage = multer.diskStorage({
         destination: function (req, file, callback) {
-            console.log("file location: " + utils.Local.APP_ROOT + utils.Local.STATIC_PATH + utils.Local.TEMP_DIR)
-            callback(null, utils.Local.APP_ROOT + utils.Local.STATIC_PATH + utils.Local.TEMP_DIR);
+            console.log("file location: " + utils.Local.appRoot + utils.Local.STATIC_PATH + utils.Local.TEMP_DIR)
+            callback(null, utils.Local.appRoot + utils.Local.STATIC_PATH + utils.Local.TEMP_DIR);
         },
         filename: function (req, file, callback) {
             console.log("saving file: "+ filename);
@@ -180,9 +183,12 @@ exports.deleteUser = function (req, res) {
                 if(!err && user != null){
                     
                     // read file from temp directory
-                    fs.readFile(utils.Local.APP_ROOT + utils.Local.STATIC_PATH + utils.Local.TEMP_DIR + filename, function (dataErr, data) {
+                    fs.readFile(utils.Local.appRoot + utils.Local.STATIC_PATH + utils.Local.TEMP_DIR + filename, function (dataErr, data) {
                         if(!dataErr && data != null) {
                             user.profilePic = data;  
+                            
+                            console.log("saving user profile picture");
+                            console.log(user);
                             
                             // updates the user profile picture
                             user.save();

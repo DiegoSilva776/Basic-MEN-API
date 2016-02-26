@@ -38,7 +38,8 @@ var ejs            = require('ejs');
 var session        = require('express-session');
 
 // local dependencies
-var utils = require('./utils/utils.js');
+var env   = require('./utils/env');
+var utils = require('./utils/utils');
 
 // load the business controller that manage the model entities that are bound 
 // to MongoDB via Mongoose. 
@@ -52,6 +53,17 @@ var apiClientController = require('./controllers/apiClientController');
 //---------------
 console.log('Initializing system ...');
 
+// setup the environment and database variables
+env.vars.IP             = process.env.IP;    // <<< comment this line if you don't have any constraint about the IP
+env.vars.PORT           = process.env.PORT;  // <<< comment this line if you don't have any constraint about the PORT
+utils.DBManager.DB_PORT = "27017";           // <<< change this line if you have any specification about the PORT you should run you database server
+utils.DBManager.DB_NAME = "basicRESTMEN_DB";
+//utils.Local.appRoot   = __dirname;         // <<< you can put the absolute path for the root directory of your webserver here if you want
+
+// configures MongoDB and attach Mongoose to it
+var url = utils.DBManager.getConnectionURL();
+mongoose.connect(url);
+ 
 // create an instance of the webserver object
 var app = express();
 
@@ -63,11 +75,7 @@ app.use(bodyParser.json());
 var router = express.Router();
 
 // creates a path to allow access to static files within the server
-express.static(path.join(utils.Local.APP_ROOT, utils.Local.STATIC_PATH));
-
-// configures MongoDB and attach Mongoose to it
-var url = utils.DBManager.getConnectionURL();
-mongoose.connect(url);
+express.static(path.join(utils.Local.appRoot, utils.Local.STATIC_PATH));
 
 // set view engine to ejs and allow the server to render pages such as HTML
 app.set('view engine', 'ejs');
@@ -79,25 +87,21 @@ app.set('view engine', 'ejs');
 /**
  * Access control related routes
  */
-// should be used on sign in/login action, returns access token after api client 
-// creation
+// returns an access token after the creation of the API client
 router.route('/apiClients')
   .post(authController.isAuthenticated, apiClientController.postClients);
 
-// should be used on sign out/logout, destroys the API client and the client 
-// access token
+// destroys the API client and the client 
 router.route('/apiClients/:id')
   .delete(authController.isAuthenticated, apiClientController.deleteClient);
 
 /**
  * User related routes
  */
-// create endpoint handlers for /users
 router.route('/users')
   .post(userController.createUsers)
   .get(authController.isAuthenticated, userController.getUsers);
 
-// create endpoint handlers for /users/:id
 router.route('/users/:id')
   .get(authController.isAuthenticated, userController.getUser)
   .put(authController.isAuthenticated, userController.updateUser)
@@ -107,16 +111,14 @@ router.route('/users/:id')
 router.route('/users/:id/updt_prfl_pic')
   .put(authController.isAuthenticated, userController.updateProfPic);
 
-/**
- * put all paths under '/api'.
- */
+// put all paths under '/api'
 app.use('/api', router);
 
 
 
 // SERVER
 //-------
-var server = app.listen(process.env.PORT, process.env.IP, function () {
+var server = app.listen(env.vars.PORT, env.vars.IP, function () {
     var host = server.address().address;
     var port = server.address().port;
     

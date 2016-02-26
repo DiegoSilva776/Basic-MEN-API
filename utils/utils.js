@@ -9,6 +9,7 @@
 //-------------
 var fs     = require('fs');
 var crypto = require('crypto');
+var env    = require('./env');
 
 // models
 var User   = require('../models/userModel');
@@ -19,7 +20,6 @@ var Token  = require('../models/apiTokenModel');
 
 // Make everything within the curly braces acessible by other .js files in Node.js
 module.exports = {
-
 
     /**
      * The DBManager prototype is responsible for dealing with DDL operations 
@@ -35,7 +35,7 @@ module.exports = {
          * Get the connection URL of the database
          */
         getConnectionURL : function(){
-            return 'mongodb://' + process.env.IP +':'+ this.DB_PORT +'/'+ this.DB_NAME;  
+            return 'mongodb://' + env.vars.IP +':'+ this.DB_PORT +'/'+ this.DB_NAME;  
         },
         
         /**
@@ -90,7 +90,7 @@ module.exports = {
      */
     Local : {
         
-        APP_ROOT    : __dirname + '/..',
+        appRoot     : '.',
         STATIC_PATH : '/data/',
         TEMP_DIR    : '_tmp/',
         
@@ -98,7 +98,9 @@ module.exports = {
          * Deletes a temporary file
          */
         deleteTempFile : function (filename){
-            fs.unlink(this.APP_ROOT + this.STATIC_PATH + this.TEMP_DIR + filename, function (err) {
+            console.log("filename: "+ this.appRoot + this.STATIC_PATH + this.TEMP_DIR + filename);
+            
+            fs.unlink(this.appRoot + this.STATIC_PATH + this.TEMP_DIR + filename, function (err) {
                 if(!err) {
                     console.log("Temporary file was deleted.");
                 }else{
