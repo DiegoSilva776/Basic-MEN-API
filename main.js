@@ -56,9 +56,10 @@ console.log('Initializing system ...');
 // setup the environment and database variables
 env.vars.IP             = process.env.IP;    // <<< comment this line if you don't have any constraint about the IP
 env.vars.PORT           = process.env.PORT;  // <<< comment this line if you don't have any constraint about the PORT
+//utils.Local.appRoot   = __dirname;         // <<< you can put the absolute path for the root directory of your webserver here if you want
 utils.DBManager.DB_PORT = "27017";           // <<< change this line if you have any specification about the PORT you should run you database server
 utils.DBManager.DB_NAME = "basicRESTMEN_DB";
-//utils.Local.appRoot   = __dirname;         // <<< you can put the absolute path for the root directory of your webserver here if you want
+
 
 // configures MongoDB and attach Mongoose to it
 var url = utils.DBManager.getConnectionURL();

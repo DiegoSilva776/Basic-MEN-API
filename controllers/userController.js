@@ -52,7 +52,7 @@ exports.createUsers = function (req, res) {
  * Get a list of all the users from the database
  */
 exports.getUsers = function (req, res) {
-    console.log('GET request for all users ...');
+    console.log('\nGET request for all users ...');
     
     return User.find(function (err, users) {
         if (!err) {
@@ -90,7 +90,7 @@ exports.getUser = function (req, res) {
  * Updates the information of the user whom has the specified id.
  */
 exports.updateUser = function (req, res) {
-    console.log('PUT request to update the user with the id ' + req.params.id);
+    console.log('\nPUT request to update the user with the id ' + req.params.id);
     
     var query = {'email' : req.params.id};
     var date = new Date(); 
@@ -149,7 +149,7 @@ exports.deleteUser = function (req, res) {
  * user is updated, otherwise the temporary file is deleted and an error is thrown.
  */
  exports.updateProfPic = function(req, res){
-    console.log("PUT request, trying to upload a file for the user " + req.params.id + " ...");
+    console.log("\nPUT request, trying to upload a file for the user " + req.params.id + " ...");
     
     // get the user id to use it as the base for the temporary filename
     var filename = req.params.id + "-profpic.png";

@@ -27,9 +27,11 @@
         
         2 - Download and install MongoDB
             http://www.tutorialspoint.com/mongodb/mongodb_environment.htm
+            
+            OBS: if you are a Windows user stop at this line of the tutorialspoint instructions for installation, don't execute it.
+                D:\set up\mongodb\bin>mongod.exe --dbpath "d:\set up\mongodb\data"
         
-        3 - Place the BasicMENREST files on the folder you want to keep the project, 
-            clone the repo or simply move the files there
+        3 - Place the BasicMENREST files in the folder you want to keep the project in, clone the repo or simply download it, extract it and move the files there
             
         4 - Set your environment variables on 'main.js' on 'INITIALIZATION' ex:
             
@@ -39,30 +41,28 @@
             utils.DBManager.DB_PORT = 27017;
             utils.DBManager.DB_NAME = "basicRESTMEN_DB";
         
-        5 - Create a data folder to hold your db, within root folder of your project:
-            mkdir data
+        5 - Install the project dependencies:
+            npm install
+        
+        6 - Create the folders 'data/_tmp' within the root folder of your project
+           
+        7 - Start MongoDB server and let it 'waiting for connections' ex:
+            open a terminal and run:
+                "D:/path to the installation directory/mongodb/bin/mongod.exe" --dbpath "D:/path to the 'data' folder you've just created within the root folder of your project"
             
-        3 - Start MongoDB server and let it 'waiting for connections' ex:
-            D:/path to the installation directory/mongodb/bin/mongod.exe --dbpath "D:/path to the root folder of your project/data"
-            D:/path to the installation directory/mongodb/bin/mongo.exe
+            Obs: if you started the MongoDB server during the MongoDB installation, make sure to kill the process
+            only one instance of 'mongod.exe' can be running.
             
-        5 - Starting making requests to the API:
+            open another terminal and run:
+                "D:/path to the root directory of your project">node main.js
+            
+        8 - Starting making requests to the API:
     
 
 ## Requests
 
     
-    
-## Installation
 
-    1 - Install the packages listed on 'package.json' file of your basic API:
-        $ npm install
-        
-    2 - Start MongoDB
-        $ mongod
-        
-    3 - Start the server
-        $ nodemon main.js
     
     
 ## Security
