@@ -79,9 +79,16 @@
                 apt-get install mongodb-10gen=2.2.3
                 
                 sudo service mongodb start
-                
+         
+        8 - Start the mongodb service:
+        
+            mongod --dbpath /data/db --smallfiles
             
-        8 - Starting making requests to the API:
+        9 - Confirm that mongodb is functional:
+        
+            mongo
+            
+        10 - Starting making requests to the API:
     
 
 ## Requests
